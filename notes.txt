@@ -1,0 +1,8 @@
+kafka-stack-docker-compose : docker-compose -f zk-single-kafka-multiple.yml logs -d
+
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic state
+
+kafka : sh produceKeyedMessage.sh < input.txt
+
+

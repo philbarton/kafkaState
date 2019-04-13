@@ -1,0 +1,2 @@
+#!/bin/bash
+kafka-topics.sh --zookeeper localhost:2181 --delete --topic $1 
