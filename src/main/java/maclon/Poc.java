@@ -16,9 +16,11 @@
  */
 package maclon;
 
-import javafx.util.Pair;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.state.KeyValueBytesStoreSupplier;
@@ -31,11 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-/**
- * In this example, we implement a simple LineSplit program using the high-level Streams DSL
- * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
- * and writes the messages as-is into a sink topic "streams-pipe-output".
- */
+
 public class Poc {
     private static final Logger LOG = LoggerFactory.getLogger(Poc.class);
 
@@ -50,7 +48,7 @@ public class Poc {
 
         String stateStore = "stateStore";
 
-        KeyValueBytesStoreSupplier storeSupplier = Stores.inMemoryKeyValueStore(stateStore);
+        KeyValueBytesStoreSupplier storeSupplier = Stores.persistentKeyValueStore(stateStore);
         StoreBuilder<KeyValueStore<String, Integer>> storeBuilder = Stores.keyValueStoreBuilder(storeSupplier, Serdes.String(), Serdes.Integer());
 
         builder.addStateStore(storeBuilder);
